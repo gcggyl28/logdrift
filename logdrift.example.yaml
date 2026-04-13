@@ -1,0 +1,29 @@
+# logdrift.example.yaml — copy to logdrift.yaml and customise.
+
+# List of services whose logs you want to tail and diff.
+services:
+  - name: api
+    # Shell command whose stdout/stderr is treated as the log stream.
+    command: "tail -f /var/log/myapp/api.log"
+    # ANSI colour for this service's output (optional).
+    # Supported: red, green, yellow, blue, magenta, cyan, white
+    color: cyan
+
+  - name: worker
+    command: "tail -f /var/log/myapp/worker.log"
+    color: yellow
+
+  - name: gateway
+    # Works with any command that writes to stdout.
+    command: "kubectl logs -f deployment/gateway -n production"
+    color: magenta
+
+# How to display differences between log streams.
+# Options:
+#   unified — classic unified-diff style (--- / +++ hunks)
+#   inline  — side-by-side coloured output
+diff_mode: unified
+
+# Number of recent log lines to keep in memory per service.
+# These lines form the window used for diffing.
+buffer_size: 200
