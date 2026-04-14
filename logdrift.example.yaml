@@ -27,3 +27,14 @@ diff_mode: unified
 # Number of recent log lines to keep in memory per service.
 # These lines form the window used for diffing.
 buffer_size: 200
+
+# Lines matching any of these regular expressions are ignored when diffing.
+# Useful for filtering out timestamps, request IDs, or other high-entropy
+# fields that would otherwise produce noisy, meaningless diffs.
+# Example patterns:
+#   - '\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}'  # ISO-8601 timestamps
+#   - 'request_id=[a-f0-9-]+'                  # UUIDs / trace IDs
+#   - '^DEBUG '                                 # drop debug-level lines entirely
+# ignore_patterns:
+#   - 'request_id=[a-f0-9-]+'
+#   - '\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}'
