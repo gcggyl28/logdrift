@@ -81,3 +81,20 @@ func TestFlusher_FinalFlushOnCancel(t *testing.T) {
 		t.Fatalf("expected final flush with 1 entry, got %v", flushed)
 	}
 }
+
+func TestFlusher_EmptyBufferNoCallback(t *testing.T) {
+	b, _ := New(4)
+
+	callCount := 0
+	f, _ := NewFlusher(b, 20*time.Millisecond, func(entries []Entry) {
+		callCount++
+	})
+
+	ctx, cancel := context.WithTimeout(context.Background(), 60*time.Millisecond)
+	defer cancel()
+	f.Run(ctx)
+
+	if callCount != 0 {
+		t.Fatalf("expected no flush calls for empty buffer, got %d", callCount)
+	}
+}
